@@ -10,21 +10,21 @@ vector<char> slots;
 vector<bool> S;
 
 int main(){
-    
+ 	
     int n;
     
     cin >> n;
     
     dist.resize(257, INT_MAX);
     
-    matrix.resize(257, vector<int>(257, 0));
+    matrix.resize(257, vector<int>(257, INT_MAX));
     
     slots.resize(n);
     
     S.resize(257, false);
     
     for (int i = 0; i < n; i++) {
-        
+     	
         char a, b; 
         
         int d;
@@ -33,22 +33,27 @@ int main(){
         
         slots[i] = a;
         
-        matrix[a][b] = d;
-        matrix[b][a] = d;
+        matrix[a][b] = min(matrix[a][b], d);
+        matrix[b][a] = min(matrix[a][b], d);
         
     }
     
     
-    dist['Z'] = 0;
     
     for (int i = 0; i < n; i++) {
-        
+     	dist[slots[i]] = matrix[slots[i]]['Z'];
+    }
+    
+    dist['Z'] = 0;
+    
+    int u = 0;
+    
+    for (int i = 0; i < n; i++) {
+     	
         int d = INT_MAX;
-        
-        int u;
-        
+                
         for (int j = 0; j < n; j++) {
-            
+         	
             int idx = slots[j];
             
             if (!S[idx] && dist[idx] < d) {
@@ -61,20 +66,24 @@ int main(){
         }
         
         S[u] = 1;
-        cout << u << endl;
+        
         if (u >= 'A' and u < 'Z') {
-            cout << (char)u << ' ' << dist[u] << endl;  
-            return 0;
+         	  
+            break;
         }
         
         for (int j = 0; j < n; j++) {
-            int idx = slots[j];
+         	int idx = slots[j];
             int w = dist[u];
-            if (!S[idx] && matrix[u][idx] > 0 and w + matrix[u][idx] < dist[idx]) {
-                dist[idx] = w + matrix[u][idx];   
+            if (!S[idx] && matrix[u][idx] < INT_MAX and w + matrix[u][idx] < dist[idx]) {
+             	dist[idx] = w + matrix[u][idx];   
             }
         }
         
     }
+    
+    cout << (char)u << ' ' << dist[u] << endl;
+    
+    
     return 0;
 }

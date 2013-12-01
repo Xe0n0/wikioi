@@ -4,7 +4,7 @@
 #include <algorithm>
 
 using namespace std;
-
+//without comp is ok
 class comp {
 public:
     string a;
@@ -136,7 +136,8 @@ int main() {
             }
             
             if (i < j)
-                num_ocur[i][j] = num_ocur[i][j] + num_ocur[i+1][j];        
+                num_ocur[i][j] = num_ocur[i][j] + num_ocur[i+1][j];  
+            
         }
     }
         
@@ -149,10 +150,11 @@ int main() {
     for (int c = 2; c <= k; c++) {
         for (int i = 0; i + c - 1 < n; i++) {
             
-            for (int j = i; j < n-2; j++) {
+            for (int j = i; j + c <= n; j++) {
+                
                 value[i][c] = max(value[i][c], num_ocur[i][j] + value[j+1][c-1]);
             }
-            
+
         }
     }
     
